@@ -10,21 +10,7 @@
 // map.centerAndZoom(point, 8.9);
 // // 初始化地图，设置中心点坐标和地图级别
 // map.enableScrollWheelZoom(true);
-// // let geoc = new BMap.Geocoder();
-// //
-// // map.addEventListener("click", function(e){
-// //     //通过点击百度地图，可以获取到对应的point, 由point的lng、lat属性就可以获取对应的经度纬度
-// //     let pt = e.point;
-// //     geoc.getLocation(pt, function(rs){
-// //         //addressComponents对象可以获取到详细的地址信息
-// //         let addComp = rs.addressComponents;
-// //         let site = addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber;
-// //         //将对应的HTML元素设置值
-// //         console.log(site);
-// //         console.log(pt.lng);
-// //         console.log(pt.lat);
-// //     });
-// // });
+
 // let styleOptions = {
 //     //strokeColor:"red",    //边线颜色。
 //     //fillColor:"red",      //填充颜色。当参数为空时，圆形将没有填充效果。
@@ -52,6 +38,24 @@ var data = [//自定义数据
 var map = new BMap.Map("container");    // 创建Map实例
 map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
 map.centerAndZoom(new BMap.Point(data[2].longitude,data[2].latitude), 16);  // 初始化地图,设置中心点坐标和地图级别
+
+let geo = new BMap.Geocoder();
+
+map.addEventListener("click", function(e){
+	//通过点击百度地图，可以获取到对应的point, 由point的lng、lat属性就可以获取对应的经度纬度
+	let pt = e.point;
+	geo.getLocation(pt, function(rs){
+		//addressComponents对象可以获取到详细的地址信息
+		let addComp = rs.addressComponents;
+		let site = addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber;
+		//将对应的HTML元素设置值
+        document.getElementById('longitude').value = pt.lng.toString();
+        document.getElementById('latitude').value = pt.lat.toString();
+		console.log(site);
+		console.log(pt.lng);
+		console.log(pt.lat);
+	});
+});
 
 var points = getPoints(data);//获取data数据中的经纬度点并格式化点为BMap点
 var times = getTimes(data);//获取data数据中的经纬度点的时间差（单位毫秒）
