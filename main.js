@@ -3,33 +3,27 @@
  * Date 18-6-1
  * Time 下午7:33
  **/
-const areaNumber = 6;//巡逻区域数目
-const shipNumber = 12;//巡逻船数目
+const areaNumber = 5;//巡逻区域数目
+const shipNumber = 10;//巡逻船数目
 const ships = [];//巡逻船数组，存放所有巡逻船信息
 const areas = [
 	[
-		new BMap.Point(100.20,3.09),
-		new BMap.Point(100.85,3.62),
-		new BMap.Point(101.38,2.97),
-		new BMap.Point(100.73,2.44)
+		new BMap.Point(100.05,2.94),
+		new BMap.Point(100.70,3.47),
+		new BMap.Point(101.23,2.82),
+		new BMap.Point(100.58,2.29)
 	],
 	[
-		new BMap.Point(99.40,4.16),
+		new BMap.Point(99.40,4.06),
 		new BMap.Point(100.05,4.59),
 		new BMap.Point(100.58,3.94),
-		new BMap.Point(99.93,3.61)
+		new BMap.Point(99.93,3.41)
 	],
 	[
 		new BMap.Point(98.34,5.36),
 		new BMap.Point(98.99,5.89),
 		new BMap.Point(99.52,5.24),
-		new BMap.Point(98.87,4.81)
-	],
-	[
-		new BMap.Point(99.32,6.16),
-		new BMap.Point(99.67,6.69),
-		new BMap.Point(100.20,6.04),
-		new BMap.Point(99.85,5.51)
+		new BMap.Point(98.87,4.71)
 	],
 	[
 		new BMap.Point(96.63,6.13),
@@ -75,7 +69,7 @@ let styleOptions = {
     strokeStyle: 'solid' //边线的样式，solid或dashed。
 };
 //区域样式
-for (let i = 0;i<6;++i){
+for (let i = 0;i<areaNumber;++i){
 	let polygon = new BMap.Polygon(areas[i], styleOptions);  //创建多边形
 	map.addOverlay(polygon);   //增加多边形
 }
@@ -90,6 +84,7 @@ function addMarker(point){  // 创建图标对象
 	// 创建标注对象并添加到地图
 	let marker = new BMap.Marker(point, {icon: myIcon});
 	map.addOverlay(marker);
+	return marker;
 }
 // 随机向地图添加10个标注
 var bounds = map.getBounds();
