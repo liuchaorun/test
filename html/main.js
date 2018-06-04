@@ -140,13 +140,26 @@ for (let i of ships){
 //巡逻换班
 setInterval(function () {
 	for (let i = 0;i<shipNumber;++i) {
-		if(usedShips[0] === i || usedShips[1] === i || usedShips[2] === i || usedShips[3] === i){
-			//do nothing
-		}
-		else{
-			ships[i].stop();
-			ships[i].type = (ships[i].type===0?1:0);
-			ships[i].change(ships[i].type === 0?areasCenter[parseInt((i/2).toString())]:areas[parseInt((i/2).toString())][0]);
+		if(usedShips.length > 0 && usedShips.length < 4){
+			setTimeout(function () {
+                if(usedShips[0] === i || usedShips[1] === i || usedShips[2] === i || usedShips[3] === i){
+                    //do nothing
+                }
+                else{
+                    ships[i].stop();
+                    ships[i].type = (ships[i].type===0?1:0);
+                    ships[i].change(ships[i].type === 0?areasCenter[parseInt((i/2).toString())]:areas[parseInt((i/2).toString())][0]);
+                }
+            },100)
+		}else{
+            if(usedShips[0] === i || usedShips[1] === i || usedShips[2] === i || usedShips[3] === i){
+                //do nothing
+            }
+            else{
+                ships[i].stop();
+                ships[i].type = (ships[i].type===0?1:0);
+                ships[i].change(ships[i].type === 0?areasCenter[parseInt((i/2).toString())]:areas[parseInt((i/2).toString())][0]);
+            }
 		}
 	}
 },10*changeTime);
@@ -236,8 +249,8 @@ function chase() {
 					let a = k * k + 1;
 					let b = -2 * (chasedShipPoint.x - k * (z - chasedShipPoint.y));
 					let c = chasedShipPoint.x * chasedShipPoint.x + (z - chasedShipPoint.y) * (z - chasedShipPoint.y) - pointLength[0] * pointLength[0];
-					let x1 = (-b - Math.pow(b * b - 4 * a * c, 1 / 2)) / (2 * a);
-					let x2 = (-b + Math.pow(b * b - 4 * a * c, 1 / 2)) / (2 * a);
+					let x1 = (-b - Math.sqrt(b * b - 4 * a * c)) / (2 * a);
+					let x2 = (-b + Math.sqrt(b * b - 4 * a * c)) / (2 * a);
 					if (x1 < r.x && x1 > chasedShipPoint.x) {
 						end.x = x1;
 						end.y = k * x1 + z;
