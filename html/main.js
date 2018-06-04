@@ -212,7 +212,8 @@ function chase() {
 			}
 		}
 		else {
-			document.getElementById('msg').innerText = '被袭船逃跑，正在追捕！';
+            console.log(11111);
+            document.getElementById('msg').innerText = '被袭船逃跑，正在追捕！';
 			getTheNearest(chasedShips[0].marker.getPosition()).then((r1) => {
 				let r = map.getMapType().getProjection().lngLatToPoint(r1);
 				let chasedShipPoint = map.getMapType().getProjection().lngLatToPoint(chasedShips[0].marker.getPosition());
@@ -235,7 +236,8 @@ function chase() {
 						}
 					}
 				}
-				let end = map.getMapType().getProjection().lngLatToPoint(new BMap.Point(0, 0));
+                console.log(pointLength);
+                let end = map.getMapType().getProjection().lngLatToPoint(new BMap.Point(0, 0));
 				if (r.x === chasedShipPoint.x) {
 					if (r.y > chasedShipPoint.y) {
 						end.y = chasedShipPoint.y + pointLength[0];
@@ -251,7 +253,9 @@ function chase() {
 					let c = chasedShipPoint.x * chasedShipPoint.x + (z - chasedShipPoint.y) * (z - chasedShipPoint.y) - pointLength[0] * pointLength[0];
 					let x1 = (-b - Math.sqrt(b * b - 4 * a * c)) / (2 * a);
 					let x2 = (-b + Math.sqrt(b * b - 4 * a * c)) / (2 * a);
-					if (x1 < r.x && x1 > chasedShipPoint.x) {
+                    console.log(x1);
+                    console.log(x2);
+                    if (x1 < r.x && x1 > chasedShipPoint.x) {
 						end.x = x1;
 						end.y = k * x1 + z;
 					}
@@ -367,7 +371,6 @@ function getCos(p1, p2, p3) {
 
 setInterval(function () {
 	if(document.getElementById('flag').innerText === '1111') {
-		console.log(1);
 		document.getElementById('msg').innerText = '被袭船已被追捕！';
 	}
 },10);
