@@ -26,7 +26,8 @@ const areasCenter = [];
 const chasedShips = [];
 //被追击的船
 const usedShips = [];
-//用以追击的船
+//用以追击的船LDY
+
 const areas = [
 	[
 		new BMap.Point(100.05, 2.94),
@@ -153,6 +154,21 @@ setInterval(function () {
 
 //追击函数
 function chase() {
+	if (chasedShips.length === 0) {
+		let point = new BMap.Point(document.getElementById('longitude').value, document.getElementById('latitude').value);
+		let myIcon = new BMap.Icon("./chasedShip.png", new BMap.Size(30, 30), {
+			imageSize: new BMap.Size(30, 30)
+		});
+		// 创建标注对象并添加到地图
+		let marker = new BMap.Marker(point, {icon: myIcon});
+		map.addOverlay(marker);
+		chasedShips.push(new chasedShip(point, marker, chasedSpeed));
+	}
+	else {
+		let point = new BMap.Point(document.getElementById('longitude').value, document.getElementById('latitude').value);
+		chasedShips[0].marker.setPosition(point);
+		chasedShips[0].startPoint = point;
+	}
 	document.getElementById('msg').innerText = '正在劫船!';
 	//获取目标船的经纬度
 	let goal = new BMap.Point(document.getElementById('longitude').value, document.getElementById('latitude').value);
@@ -238,11 +254,17 @@ function chase() {
 					let c = chasedShipPoint.x * chasedShipPoint.x + (z - chasedShipPoint.y) * (z - chasedShipPoint.y) - pointLength[0] * pointLength[0];
 					let x1 = (-b - Math.pow(b * b - 4 * a * c, 1 / 2)) / (2 * a);
 					let x2 = (-b + Math.pow(b * b - 4 * a * c, 1 / 2)) / (2 * a);
-					if (x1 < r.x && x1 > chasedShipPoint.x) {
+					console.log(x1);
+					console.log(x2);
+					console.log(chasedShipPoint.x);
+					console.log(r.x);
+					if (x1 < r.x && x1 > chasedShipPoint.x || x1 > r.x && x1 < chasedShipPoint.x) {
 						end.x = x1;
 						end.y = k * x1 + z;
+						console.log(end);
+						console.log(r);
 					}
-					else if (x2 < r.x && x2 > chasedShipPoint.x) {
+					else if (x2 < r.x && x2 > chasedShipPoint.x || x2 > r.x && x2 < chasedShipPoint.x) {
 						end.x = x2;
 						end.y = k * x2 + z;
 					}
