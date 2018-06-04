@@ -32,7 +32,7 @@ ship.prototype.setSpeed = function (s) {
 //换班函数
 ship.prototype.change = function (end){
 	let m = this;
-	m.move(m.marker.getPosition(),end,m.marker);
+	m.moveOne(m.marker.getPosition(),end,m.marker);
 	m.i = 0;
 	//初始坐标
 	let init_pos = map.getMapType().getProjection().lngLatToPoint(m.marker.getPosition());
@@ -41,7 +41,6 @@ ship.prototype.change = function (end){
 	m.setTimeoutFlag = setTimeout(function () {
 		m.stop();
 		if(m.type === 1){
-			console.log(1);
 			m.patrol();
 		}
 	},10*Math.round(this.getDistance(init_pos, target_pos) / (m.speed/100)))
@@ -232,4 +231,42 @@ ship.prototype.tweenLinear = function (initPos, targetPos, currentCount, count) 
 ship.prototype.linePixelLength = function (to) {
 	let from = map.getMapType().getProjection().lngLatToPoint(this.marker.getPosition());
 	return Math.sqrt(Math.abs(from.x - to.x) * Math.abs(from.x - to.x) + Math.abs(from.y - to.y) * Math.abs(from.y - to.y));
+};
+
+//移动一次
+ship.prototype.moveOne = function (initPos, targetPos, nowMarker) {
+    let m = this,
+        //当前的帧数
+        currentCount = 0,
+        //步长，米/秒
+        timer = 10,
+        step = m.speed / (1000 / timer),
+        //初始坐标
+        init_pos = map.getMapType().getProjection().lngLatToPoint(initPos),
+        //获取结束点的(x,y)坐标
+        target_pos = map.getMapType().getProjection().lngLatToPoint(targetPos),
+        //总的步长
+        count = Math.round(this.getDistance(init_pos, target_pos) / step);
+
+    if (count < 1) {
+        return;
+    }
+    m._intervalFlag = setInterval(function () {
+        //两点之间当前帧数大于总帧数的时候，则说明已经完成移动
+        if (currentCount >= count) {
+            clearInterval(m._intervalFlag);
+        } else {
+            currentCount++;
+            let x = m.tweenLinear(init_pos.x, target_pos.x, currentCount, count),
+                y = m.tweenLinear(init_pos.y, target_pos.y, currentCount, count),
+                pos = map.getMapType().getProjection().pointToLngLat(new BMap.Pixel(x, y));
+            //设置marker
+            if (currentCount === 1) {
+                let proPos = m.area[(m.i - 1) % 4];
+                m.setRotation(proPos, initPos, targetPos, nowMarker);
+            }
+            //正在移动
+            nowMarker.setPosition(pos);
+        }
+    }, timer);
 };
