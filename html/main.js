@@ -355,3 +355,10 @@ function getCos(p1, p2, p3) {
 	let l3 = Math.sqrt(Math.pow(p1.x - p3.x, 2) + Math.pow(p1.y - p3.y, 2));
 	return (l1 * l1 + l2 * l2 - l3 * l3) / (2 * l1 * l2);
 }
+
+setInterval(function () {
+	if(document.getElementById('flag').innerText === '1111') {
+		console.log(1);
+		document.getElementById('msg').innerText = '被袭船已被追捕！';
+	}
+},10);
