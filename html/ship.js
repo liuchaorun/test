@@ -38,7 +38,7 @@ ship.prototype.change = function (end){
 	let init_pos = map.getMapType().getProjection().lngLatToPoint(m.marker.getPosition());
 		//获取结束点的(x,y)坐标
 	let	target_pos = map.getMapType().getProjection().lngLatToPoint(end);
-	setTimeout(function () {
+	m.setTimeoutFlag = setTimeout(function () {
 		m.stop();
 		if(m.type === 1){
 			console.log(1);
@@ -134,6 +134,7 @@ ship.prototype.moveNext = function (index) {
 ship.prototype.stop = function () {
 	let m = this;
 	clearInterval(m._intervalFlag);
+	clearTimeout(m.setTimeoutFlag);
 };
 
 //移动函数
