@@ -70,6 +70,7 @@ ship.prototype.chase = function (end, t = 0) {
 			//两点之间当前帧数大于总帧数的时候，则说明已经完成移动
 			if (currentCount >= count) {
 				clearInterval(m._intervalFlag);
+				document.getElementById('msg').innerText = '被袭船已被追捕！';
 			} else {
 				currentCount++;
 				let x = m.tweenLinear(init_pos.x, target_pos.x, currentCount, count),
