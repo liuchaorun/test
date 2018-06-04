@@ -29,6 +29,25 @@ ship.prototype.setSpeed = function (s) {
 	m.speed = s;
 };
 
+//换班函数
+ship.prototype.change = function (end){
+	let m = this;
+	m.move(m.marker.getPosition(),end,m.marker);
+	m.i = 0;
+	//初始坐标
+	let init_pos = map.getMapType().getProjection().lngLatToPoint(m.marker.getPosition());
+		//获取结束点的(x,y)坐标
+	let	target_pos = map.getMapType().getProjection().lngLatToPoint(end);
+	setTimeout(function () {
+		m.stop();
+		if(m.type === 1){
+			console.log(1);
+			m.patrol();
+		}
+	},10*Math.round(this.getDistance(init_pos, target_pos) / (m.speed/100)))
+
+};
+
 //开始追击
 ship.prototype.chase = function (end, t = 0) {
 	if (t === 0) {
@@ -91,7 +110,6 @@ ship.prototype.chase = function (end, t = 0) {
 				clearInterval(m._intervalFlag);
 			} else {
 				currentCount++;
-				console.log(currentCount);
 				let x = m.tweenLinear(init_pos.x, target_pos.x, currentCount, count),
 					y = m.tweenLinear(init_pos.y, target_pos.y, currentCount, count),
 					pos = map.getMapType().getProjection().pointToLngLat(new BMap.Pixel(x, y));

@@ -5,14 +5,16 @@
  **/
 let map = new BMap.Map("container");
 // 创建地图实例
-const speed = 2000;
+const speed = 20000;
 //巡逻速度 米/秒
-const chasedSpeed = 1000;
+const chasedSpeed = 10000;
 //被袭船逃跑速度 米/秒
-const fullSpeed = 2500;
+const fullSpeed = 25000;
 //追击速度 米/秒
-const robberyTime = 30 * 60;
+const robberyTime = 30 * 6;
 //劫船所需时间，单位秒
+const changeTime = 12*30*6;
+//换岗时间
 const areaNumber = 5;
 //巡逻区域数目
 const shipNumber = 10;
@@ -130,13 +132,26 @@ function addMarker(point) {
 //创建所有巡逻船的实例
 for (let i = 0; i < areaNumber; ++i) {
 	ships.push(new ship(1, areas[i], addMarker(areas[i][0]), speed));
-	ships.push(new ship(0, areasCenter[i], addMarker(areasCenter[i]), speed));
+	ships.push(new ship(0, areas[i], addMarker(areasCenter[i]), speed));
 }
 
 //所有船开始巡航
-for (let i of ships) {
+for (let i of ships){
 	i.patrol();
 }
+//巡逻换班
+setInterval(function () {
+	for (let i = 0;i<shipNumber;++i) {
+		if(usedShips[0] === i || usedShips[1] === i || usedShips[2] === i || usedShips[3] === i){
+			//do nothing
+		}
+		else{
+			ships[i].stop();
+			ships[i].type = (ships[i].type===0?1:0);
+			ships[i].change(ships[i].type === 0?areasCenter[parseInt((i/2).toString())]:areas[parseInt((i/2).toString())][0]);
+		}
+	}
+},10*changeTime);
 
 //追击函数
 function chase() {
