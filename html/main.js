@@ -27,8 +27,6 @@ const chasedShips = [];
 //被追击的船
 const usedShips = [];
 //用以追击的船
-const chaseEnd = map.getMapType().getProjection().lngLatToPoint(new BMap.Point(0, 0));
-//追击的终点
 const areas = [
 	[
 		new BMap.Point(100.05, 2.94),
@@ -254,11 +252,9 @@ function chase() {
 					}
 				}
 				chasedShips[0].addPath(map.getMapType().getProjection().pointToLngLat(end));
-				chaseEnd.x = end.x;
-				chaseEnd.y = end.y;
 				for (let i of usedShips) {
 					ships[i].setSpeed(fullSpeed);
-					ships[i].chase(map.getMapType().getProjection().pointToLngLat(chaseEnd));
+					ships[i].chase(map.getMapType().getProjection().pointToLngLat(end));
 				}
 				chasedShips[0].start();
 			});
