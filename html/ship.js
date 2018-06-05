@@ -49,80 +49,85 @@ ship.prototype.change = function (end){
 
 //开始追击
 ship.prototype.chase = function (end, t = 0) {
-	if (t === 0) {
-		let m = this,
-			//当前的帧数
-			currentCount = 0,
-			//步长，米/秒
-			timer = 10,
-			step = m.speed / (1000 / timer),
-			//初始坐标
-			init_pos = map.getMapType().getProjection().lngLatToPoint(m.marker.getPosition()),
-			//获取结束点的(x,y)坐标
-			target_pos = map.getMapType().getProjection().lngLatToPoint(end),
-			//总的步长
-			count = Math.round(this.getDistance(init_pos, target_pos) / step);
-		if (count < 1) {
-			return;
-		}
-		m._intervalFlag = setInterval(function () {
-			//两点之间当前帧数大于总帧数的时候，则说明已经完成移动
-			if (currentCount >= count) {
-				document.getElementById('flag').innerText += 1;
-				clearInterval(m._intervalFlag);
-			} else {
-				currentCount++;
-				let x = m.tweenLinear(init_pos.x, target_pos.x, currentCount, count),
-					y = m.tweenLinear(init_pos.y, target_pos.y, currentCount, count),
-					pos = map.getMapType().getProjection().pointToLngLat(new BMap.Pixel(x, y));
-				//设置marker
-				if (currentCount === 1) {
-					let proPos = m.area[(m.i - 1) % 4];
-					m.setRotation(proPos, m.marker.getPosition(), end, m.marker);
-				}
-				//正在移动
-				m.marker.setPosition(pos);
+	let m = this;
+	m.customEnd = end;
+	m.customT = t;
+	setTimeout(function () {
+		if (m.customT === 0) {
+			let
+				//当前的帧数
+				currentCount = 0,
+				//步长，米/秒
+				timer = 10,
+				step = m.speed / (1000 / timer),
+				//初始坐标
+				init_pos = map.getMapType().getProjection().lngLatToPoint(m.marker.getPosition()),
+				//获取结束点的(x,y)坐标
+				target_pos = map.getMapType().getProjection().lngLatToPoint(m.customEnd),
+				//总的步长
+				count = Math.round(m.getDistance(init_pos, target_pos) / step);
+			if (count < 1) {
+				return;
 			}
-		}, timer);
-	}
-	else {
-		let m = this,
-			//当前的帧数
-			currentCount = 0,
-			//步长，米/秒
-			timer = 10,
-			step = m.speed / (1000 / timer),
-			//初始坐标
-			init_pos = map.getMapType().getProjection().lngLatToPoint(m.marker.getPosition()),
-			//获取结束点的(x,y)坐标
-			target_pos = map.getMapType().getProjection().lngLatToPoint(end),
-			//总的步长
-			count = Math.round(this.getDistance(init_pos, target_pos) / step);
-		if (count < 1) {
-			return;
-		}
-		m._intervalFlag = setInterval(function () {
-			//两点之间当前帧数大于总帧数的时候，则说明已经完成移动
-			if (currentCount >= (t > count ? count : t)) {
-				if (count < t) {
+			m._intervalFlag = setInterval(function () {
+				//两点之间当前帧数大于总帧数的时候，则说明已经完成移动
+				if (currentCount >= count) {
 					document.getElementById('flag').innerText += 1;
+					clearInterval(m._intervalFlag);
+				} else {
+					currentCount++;
+					let x = m.tweenLinear(init_pos.x, target_pos.x, currentCount, count),
+						y = m.tweenLinear(init_pos.y, target_pos.y, currentCount, count),
+						pos = map.getMapType().getProjection().pointToLngLat(new BMap.Pixel(x, y));
+					//设置marker
+					if (currentCount === 1) {
+						let proPos = m.area[(m.i - 1) % 4];
+						m.setRotation(proPos, m.marker.getPosition(), end, m.marker);
+					}
+					//正在移动
+					m.marker.setPosition(pos);
 				}
-				clearInterval(m._intervalFlag);
-			} else {
-				currentCount++;
-				let x = m.tweenLinear(init_pos.x, target_pos.x, currentCount, count),
-					y = m.tweenLinear(init_pos.y, target_pos.y, currentCount, count),
-					pos = map.getMapType().getProjection().pointToLngLat(new BMap.Pixel(x, y));
-				//设置marker
-				if (currentCount === 1) {
-					let proPos = m.area[(m.i - 1) % 4];
-					m.setRotation(proPos, m.marker.getPosition(), end, m.marker);
-				}
-				//正在移动
-				m.marker.setPosition(pos);
+			}, timer);
+		}
+		else {
+			let
+				//当前的帧数
+				currentCount = 0,
+				//步长，米/秒
+				timer = 10,
+				step = m.speed / (1000 / timer),
+				//初始坐标
+				init_pos = map.getMapType().getProjection().lngLatToPoint(m.marker.getPosition()),
+				//获取结束点的(x,y)坐标
+				target_pos = map.getMapType().getProjection().lngLatToPoint(m.customEnd),
+				//总的步长
+				count = Math.round(m.getDistance(init_pos, target_pos) / step);
+			if (count < 1) {
+				return;
 			}
-		}, timer);
-	}
+			m._intervalFlag = setInterval(function () {
+				//两点之间当前帧数大于总帧数的时候，则说明已经完成移动
+				if (currentCount >= (m.customT > count ? count : m.customT)) {
+					if (count < m.customT) {
+						document.getElementById('flag').innerText += 1;
+					}
+					clearInterval(m._intervalFlag);
+				} else {
+					currentCount++;
+					let x = m.tweenLinear(init_pos.x, target_pos.x, currentCount, count),
+						y = m.tweenLinear(init_pos.y, target_pos.y, currentCount, count),
+						pos = map.getMapType().getProjection().pointToLngLat(new BMap.Pixel(x, y));
+					//设置marker
+					if (currentCount === 1) {
+						let proPos = m.area[(m.i - 1) % 4];
+						m.setRotation(proPos, m.marker.getPosition(), end, m.marker);
+					}
+					//正在移动
+					m.marker.setPosition(pos);
+				}
+			}, timer);
+		}
+	},200)
 };
 
 //移动到下一个节点

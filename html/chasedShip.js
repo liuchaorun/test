@@ -13,9 +13,7 @@ let chasedShip = function (startPoint, marker, speed) {
 
 chasedShip.prototype.start = function () {
 	let m = this;
-	m._timeoutFlag = setTimeout(function () {
-		m.moveNext(m.i);
-	}, 400);
+	m.moveNext(m.i);
 };
 
 chasedShip.prototype.addPath = function (p) {

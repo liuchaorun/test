@@ -3,17 +3,19 @@
  * Date 18-6-1
  * Time 下午7:33
  **/
+const base = 60 * 2;
+//12小时为多少秒
 let map = new BMap.Map("container");
 // 创建地图实例
-const speed = 20000;
+const speed = 7300;
 //巡逻速度 米/秒
-const chasedSpeed = 10000;
+const chasedSpeed = 3650;
 //被袭船逃跑速度 米/秒
-const fullSpeed = 25000;
+const fullSpeed = 9125;
 //追击速度 米/秒
-const robberyTime = 30 * 6;
+const robberyTime = 100 * base / 24;
 //劫船所需时间，单位秒
-const changeTime = 12*30*6;
+const changeTime = 100 * base;
 //换岗时间
 const areaNumber = 5;
 //巡逻区域数目
@@ -141,13 +143,26 @@ for (let i of ships){
 //巡逻换班
 setInterval(function () {
 	for (let i = 0;i<shipNumber;++i) {
-		if(usedShips[0] === i || usedShips[1] === i || usedShips[2] === i || usedShips[3] === i){
-			//do nothing
-		}
-		else{
-			ships[i].stop();
-			ships[i].type = (ships[i].type===0?1:0);
-			ships[i].change(ships[i].type === 0?areasCenter[parseInt((i/2).toString())]:areas[parseInt((i/2).toString())][0]);
+		if(usedShips.length > 0 && usedShips.length < 4){
+			setTimeout(function () {
+                if(usedShips[0] === i || usedShips[1] === i || usedShips[2] === i || usedShips[3] === i){
+                    //do nothing
+                }
+                else{
+                    ships[i].stop();
+                    ships[i].type = (ships[i].type===0?1:0);
+                    ships[i].change(ships[i].type === 0?areasCenter[parseInt((i/2).toString())]:areas[parseInt((i/2).toString())][0]);
+                }
+            },100)
+		}else{
+            if(usedShips[0] === i || usedShips[1] === i || usedShips[2] === i || usedShips[3] === i){
+                //do nothing
+            }
+            else{
+                ships[i].stop();
+                ships[i].type = (ships[i].type===0?1:0);
+                ships[i].change(ships[i].type === 0?areasCenter[parseInt((i/2).toString())]:areas[parseInt((i/2).toString())][0]);
+            }
 		}
 	}
 },10*changeTime);
@@ -215,7 +230,8 @@ function chase() {
 			}
 		}
 		else {
-			document.getElementById('msg').innerText = '被袭船逃跑，正在追捕！';
+            console.log(11111);
+            document.getElementById('msg').innerText = '被袭船逃跑，正在追捕！';
 			getTheNearest(chasedShips[0].marker.getPosition()).then((r1) => {
 				let r = map.getMapType().getProjection().lngLatToPoint(r1);
 				let chasedShipPoint = map.getMapType().getProjection().lngLatToPoint(chasedShips[0].marker.getPosition());
@@ -238,7 +254,8 @@ function chase() {
 						}
 					}
 				}
-				let end = map.getMapType().getProjection().lngLatToPoint(new BMap.Point(0, 0));
+                console.log(pointLength);
+                let end = map.getMapType().getProjection().lngLatToPoint(new BMap.Point(0, 0));
 				if (r.x === chasedShipPoint.x) {
 					if (r.y > chasedShipPoint.y) {
 						end.y = chasedShipPoint.y + pointLength[0];
@@ -274,11 +291,11 @@ function chase() {
 					}
 				}
 				chasedShips[0].addPath(map.getMapType().getProjection().pointToLngLat(end));
+				chasedShips[0].start();
 				for (let i of usedShips) {
 					ships[i].setSpeed(fullSpeed);
 					ships[i].chase(map.getMapType().getProjection().pointToLngLat(end));
 				}
-				chasedShips[0].start();
 			});
 		}
 	}, 10 * robberyTime);
@@ -376,7 +393,6 @@ function getCos(p1, p2, p3) {
 
 setInterval(function () {
 	if(document.getElementById('flag').innerText === '1111') {
-		console.log(1);
 		document.getElementById('msg').innerText = '被袭船已被追捕！';
 	}
 },10);
