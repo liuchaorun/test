@@ -3,15 +3,15 @@
  * Date 18-6-1
  * Time 下午7:33
  **/
-const base = 60 * 2;
+const base = 60 * 0.5;
 //12小时为多少秒
 let map = new BMap.Map("container");
 // 创建地图实例
-const speed = 7300;
+const speed = 7300 * (60*2/base);
 //巡逻速度 米/秒
-const chasedSpeed = 3650;
+const chasedSpeed = 3650 * (60*2/base);
 //被袭船逃跑速度 米/秒
-const fullSpeed = 9125;
+const fullSpeed = 9125 * (60*2/base);
 //追击速度 米/秒
 const robberyTime = 100 * base / 24;
 //劫船所需时间，单位秒
