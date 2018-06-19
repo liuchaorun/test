@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>反恐安全博弈资源分配管理系统</title>
+    <style type="text/css">
+        #title{
+            text-align: center;
+            margin-top: 5%;
+            font-size: 32px;
+        }
+        #loginDiv{
+            margin-top: 200px;
+        }
+        .input_control{
+            width:360px;
+            margin:20px auto;
+        }
+        input,button{
+            box-sizing: border-box;
+            text-align:center;
+            font-size:1.4em;
+            height:2.7em;
+            border-radius:4px;
+            border:1px solid #c8cccf;
+            color:#6a6f77;
+            -web-kit-appearance:none;
+            -moz-appearance: none;
+            display:block;
+            outline:0;
+            padding:0 1em;
+            text-decoration:none;
+            width:100%;
+        }
+        input:focus{
+            border:1px solid #ff7496;
+        }
+    </style>
+</head>
+<body>
+<div id="title"><h1>反恐安全博弈资源分配管理系统</h1></div>
+<div id="loginDiv">
+    <div class="input_control"><input id="username" type="text" placeholder="用户名"></div>
+    <div class="input_control"><input id="password" type="password" placeholder="密码"></div>
+    <div class="input_control"><button onclick="login()">登录</button></div>
+</div>
+<script>
+    function login() {
+        location.href = './select.html';
+    }
+</script>
+</body>
+</html>

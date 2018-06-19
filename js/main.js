@@ -71,10 +71,10 @@ map.enableScrollWheelZoom(true);
 
 let geo = new BMap.Geocoder();
 
-map.addEventListener("rightclick", function (e) {
+map.addEventListener("rightclick", function addChasedShip(e) {
 	//通过点击百度地图，可以获取到对应的point, 由point的lng、lat属性就可以获取对应的经度纬度
 	let pt = e.point;
-	geo.getLocation(pt, function (rs) {
+	geo.getLocation(pt, function afterGetLocation(rs) {
 		//将对应的HTML元素设置值
 		let addComp = rs.addressComponents;
 		if (addComp.city.length === 0) {
@@ -82,7 +82,7 @@ map.addEventListener("rightclick", function (e) {
 			document.getElementById('latitude').value = pt.lat.toString();
 			if (chasedShips.length === 0) {
 				let point = new BMap.Point(pt.lng, pt.lat);
-				let myIcon = new BMap.Icon("./chasedShip.png", new BMap.Size(30, 30), {
+				let myIcon = new BMap.Icon("../image/chasedShip.png", new BMap.Size(30, 30), {
 					imageSize: new BMap.Size(30, 30)
 				});
 				// 创建标注对象并添加到地图
@@ -121,7 +121,7 @@ for (let i = 0; i < areaNumber; ++i) {
 
 function addMarker(point) {
 	// 创建图标对象
-	let myIcon = new BMap.Icon("./ship.png", new BMap.Size(30, 30), {
+	let myIcon = new BMap.Icon("../image/ship.png", new BMap.Size(30, 30), {
 		imageSize: new BMap.Size(30, 30)
 	});
 	// 创建标注对象并添加到地图
@@ -136,36 +136,38 @@ for (let i = 0; i < areaNumber; ++i) {
 	ships.push(new ship(0, areas[i], addMarker(areasCenter[i]), speed));
 }
 
-//所有船开始巡航
-for (let i of ships){
-	i.patrol();
-}
-//巡逻换班
-setInterval(function () {
-	for (let i = 0;i<shipNumber;++i) {
-		if(usedShips.length > 0 && usedShips.length < 4){
-			setTimeout(function () {
-                if(usedShips[0] === i || usedShips[1] === i || usedShips[2] === i || usedShips[3] === i){
-                    //do nothing
-                }
-                else{
-                    ships[i].stop();
-                    ships[i].type = (ships[i].type===0?1:0);
-                    ships[i].change(ships[i].type === 0?areasCenter[parseInt((i/2).toString())]:areas[parseInt((i/2).toString())][0]);
-                }
-            },100)
-		}else{
-            if(usedShips[0] === i || usedShips[1] === i || usedShips[2] === i || usedShips[3] === i){
-                //do nothing
-            }
-            else{
-                ships[i].stop();
-                ships[i].type = (ships[i].type===0?1:0);
-                ships[i].change(ships[i].type === 0?areasCenter[parseInt((i/2).toString())]:areas[parseInt((i/2).toString())][0]);
-            }
-		}
+function patrol() {
+	//所有船开始巡航
+	for (let i of ships){
+		i.patrol();
 	}
-},10*changeTime);
+    //巡逻换班
+	setInterval(function () {
+		for (let i = 0;i<shipNumber;++i) {
+			if(usedShips.length > 0 && usedShips.length < 4){
+				setTimeout(function () {
+					if(usedShips[0] === i || usedShips[1] === i || usedShips[2] === i || usedShips[3] === i){
+						//do nothing
+					}
+					else{
+						ships[i].stop();
+						ships[i].type = (ships[i].type===0?1:0);
+						ships[i].change(ships[i].type === 0?areasCenter[parseInt((i/2).toString())]:areas[parseInt((i/2).toString())][0]);
+					}
+				},100)
+			}else{
+				if(usedShips[0] === i || usedShips[1] === i || usedShips[2] === i || usedShips[3] === i){
+					//do nothing
+				}
+				else{
+					ships[i].stop();
+					ships[i].type = (ships[i].type===0?1:0);
+					ships[i].change(ships[i].type === 0?areasCenter[parseInt((i/2).toString())]:areas[parseInt((i/2).toString())][0]);
+				}
+			}
+		}
+	},10*changeTime);
+}
 
 //追击函数
 function chase() {

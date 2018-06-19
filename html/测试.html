@@ -4,7 +4,7 @@
 <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Hello, World</title>
+    <title>反恐安全博弈资源分配管理系统</title>
     <style type="text/css">
         html {
             height: 100%
@@ -36,15 +36,16 @@
         }
     </style>
     <script type="text/javascript"
-            src="http://api.map.baidu.com/api?v=3.0&ak=kmUw6MjHzc52arN9hPlpz4GE6BojeNRU"></script>
-    <script type="text/javascript" src="ship.js"></script>
-    <script type="text/javascript" src="chasedShip.js"></script>
+            src="http://api.map.baidu.com/api?v=3.0&ak=TPAAxjGW68Hnb69xanQGkLM0p7Z3B4gi"></script>
+    <script type="text/javascript" src="../js/ship.js"></script>
+    <script type="text/javascript" src="../js/chasedShip.js"></script>
 </head>
 
 <body>
 
 <div id="container"></div>
 <div id="control">
+    <button id="startPatrol" onclick="patrol()">开始巡航</button>
     <div><label for="longitude">请输入经度</label><input id="longitude"></div>
     <div><label for="latitude">请输入纬度</label><input id="latitude"></div>
     <div><p id="msg"></p></div>
@@ -52,7 +53,8 @@
     <button id="start" onclick="chase()">开始追击</button>
 
 </div>
-<script type="text/javascript" src="main.js"></script>
+
+<script type="text/javascript" src="../js/main.js"></script>
 
 </body>
 

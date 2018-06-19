@@ -52,7 +52,7 @@ ship.prototype.chase = function (end, t = 0) {
 	let m = this;
 	m.customEnd = end;
 	m.customT = t;
-	setTimeout(function () {
+	setTimeout(function after() {
 		if (m.customT === 0) {
 			let
 				//当前的帧数
