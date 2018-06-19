@@ -8,6 +8,6 @@ const koa_static = require('koa-static');
 
 app = new koa();
 
-app.use(koa_static(__dirname+'/html'));
+app.use(koa_static(__dirname));
 
 app.listen(3002);
